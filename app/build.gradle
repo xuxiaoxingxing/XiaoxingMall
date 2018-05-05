@@ -84,7 +84,7 @@ android {
             // 动态修改 常量 字段
             buildConfigField "String", "ENVIRONMENT", '"小星-Mall"'
             // 修改 AndroidManifest.xml 里渠道变量
-            manifestPlaceholders = [CHANNEL_VALUE: "mall", app_icon   : "@mipmap/ic_launcher"]
+            manifestPlaceholders = [CHANNEL_VALUE: "mall", app_icon: "@mipmap/ic_launcher"]
         }
     }
 
