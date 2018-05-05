@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_close"
+        android:orderInCategory="100"
+        android:title="搜索"
+        android:icon="@mipmap/search_clear_normal"
+        app:showAsAction="always" />
+    <!--<item-->
+        <!--android:id="@+id/scan_local_music"-->
+        <!--android:icon="@drawable/lv"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="扫描本地音乐"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/select_sort_way"-->
+        <!--android:icon="@drawable/lt"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="选择排序方式"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/get_cover_lyrics"-->
+        <!--android:icon="@drawable/lq"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="获取封面歌词"-->
+        <!--app:showAsAction="never" />-->
+    <!--<item-->
+        <!--android:id="@+id/imporve_tone_quality"-->
+        <!--android:icon="@drawable/lw"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:title="升级音质"-->
+        <!--app:showAsAction="never" />-->
+</menu>

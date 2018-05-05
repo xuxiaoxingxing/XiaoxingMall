@@ -1,0 +1,100 @@
+apply plugin: 'com.android.application'
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+//        applicationId "com.xiaoxing.mall"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // dex突破65535的限制
+        multiDexEnabled true
+        // 默认是umeng的渠道
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
+        flavorDimensions "release"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("../keystore/xiaoxing.jks")
+            storePassword "xuxingxing"
+            keyAlias "xiaoxing"
+            keyPassword "xuxingxing"
+        }
+        release {
+            storeFile file("../keystore/xiaoxing.jks")
+            storePassword "xuxingxing"
+            keyAlias "xiaoxing"
+            keyPassword "xuxingxing"
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+        }
+        release {
+            minifyEnabled false
+            // Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources false
+
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+
+            signingConfig signingConfigs.release
+            // 自定义输出配置
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为JPay_0.0.1_xiaomi.apk
+                        def fileName = "xiaoxing_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                        outputFileName = new File("", fileName)
+                    }
+                }
+            }
+
+
+        }
+    }
+
+    //多渠道打包
+    productFlavors {
+        mall {
+            dimension "release"
+            // 每个环境包名不同
+            applicationId "com.xiaoxing.mall"
+            // 动态添加 string.xml 字段；
+            // 注意，这里是添加，在 string.xml 不能有这个字段，会重名！！！
+//            resValue "string", "app_name", "小星-Mall"
+            resValue "bool", "auto_updates", 'false'
+            // 动态修改 常量 字段
+            buildConfigField "String", "ENVIRONMENT", '"小星-Mall"'
+            // 修改 AndroidManifest.xml 里渠道变量
+            manifestPlaceholders = [CHANNEL_VALUE: "mall", app_icon   : "@mipmap/ic_launcher"]
+        }
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation project(':xiaoxing_mvp_core')
+}
